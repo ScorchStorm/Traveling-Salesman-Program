@@ -22,17 +22,16 @@ def use_all_methods(shortest_points, old_shortest_distance, number, original_dis
     distances = []
     loop_number = 1
     for _ in range(0,5):
-        print(f'\n\nStarting Switchblade Algorithim for the {ordinal[loop_number]} time')
-        shortest_points, old_shortest_distance = switchblade(shortest_points, number_of_points, old_shortest_distance, original_distance, number)
+        print(f'\nStarting Switch Line Segments Algorithim for the {ordinal[loop_number]} time')
+        shortest_points, old_shortest_distance = switch_line_segments(shortest_points, number_of_points, old_shortest_distance, original_distance, number)
         distance = find_total_distance(shortest_points)
         distances.append(distance)
-        print(f'\nStarting New Rearrange Algorithim for the {ordinal[loop_number]} time')
+        print(f'\nStarting Rearrange Points Algorithim for the {ordinal[loop_number]} time')
         shortest_points, old_shortest_distance = rearrange_points(shortest_points, number_of_points, old_shortest_distance, original_distance, number)
         distance = find_total_distance(shortest_points)
         distances.append(distance)
         loop_number += 1
-    print(f'distances = {distances}')
-    print(f'last distance = {distance}')
+    print(f'The line has been fully optimized and has a new distance of {distance}')
     return shortest_points
 
 def reverse_list(points, shortest_distance, reverse_start_index, reverse_end_index):
@@ -53,7 +52,7 @@ def reverse_list(points, shortest_distance, reverse_start_index, reverse_end_ind
         print(f'total_distance = {total_distance}')
         print(f'shortest_distance = {shortest_distance}')
 
-def switchblade(points, number_of_points, old_shortest_distance, original_distance, number):
+def switch_line_segments(points, number_of_points, old_shortest_distance, original_distance, number):
     '''This algorithm essentially goes through a list of every line segment and predicts whether switching it's endpoints with the endpoints of any other line would make the overall path shorter '''
     for i in range(len(points)-1):
         for n in range(i+1,len(points)):
@@ -70,7 +69,7 @@ def switchblade(points, number_of_points, old_shortest_distance, original_distan
                 switched_points = reverse_list(points.copy(), new_distance, i, n)
                 is_shorter, new_shortest_distance, number = report_progress('Switchblade', switched_points, number, original_distance, number_of_points, old_shortest_distance, i, n, distance_saved)
                 if is_shorter:
-                    return switchblade(switched_points, number_of_points, new_shortest_distance, original_distance, number)
+                    return switch_line_segments(switched_points, number_of_points, new_shortest_distance, original_distance, number)
     return points, old_shortest_distance
 
 def report_progress(name, switched_points, number, original_distance, number_of_points, old_shortest_distance, i, n, distance_saved):
